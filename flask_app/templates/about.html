@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrabloom - Plants</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f8f6;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #fff;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .logo-container img {
+            width: 24px; /* Adjust size as needed */
+            height: 24px; /* Adjust size as needed */
+            margin-left: 4px; /* Minimal spacing */
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #666;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        header nav ul li a:hover {
+            color: #000;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 40px;
+        }
+
+        .text-content {
+            max-width: 50%;
+        }
+
+        .text-content h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .text-content p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f513f;
+            border: 2px solid #1f513f;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .buttons a.register-btn {
+            background-color: #1f513f;
+            color: #fff;
+        }
+
+        .buttons a:hover {
+            background-color: #14412e;
+            color: #fff;
+        }
+
+        /* Plant Details */
+        .plant-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .plant-details img {
+            width: 220px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .stat p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f513f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <h1>HydraBloom</h1>
+            <!-- Leaf Logo -->
+            <img src="images/image.jpg" alt="Leaf Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Plants</a></li>
+                <li><a href="#">Vase</a></li>
+                <li><a href="sign.html">Log In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="text-content">
+            <h1>The World of Decorative Plants</h1>
+            <p>Take care of your houseplants, and before you know it, your home will be a botanical paradise.</p>
+            <div class="buttons">
+                <a href="sign.html" class="login-btn">Login</a>
+                <a href="sign.html" class="register-btn">Register</a>
+            </div>
+        </div>
+        <div class="plant-details">
+            <img src="https://png.pngtree.com/png-vector/20240207/ourmid/pngtree-indoor-plant-flowerpot-png-image_11669796.png" alt="Peperomia Houseplant">
+            <div class="stats">
+                <div class="stat">
+                    <h4>Light Status</h4>
+                    <p>On</p>
+                </div>
+                <div class="stat">
+                    <h4>Temperature</h4>
+                    <p>23°C</p>
+                </div>
+                <div class="stat">
+                    <h4>Humidity</h4>
+                    <p>74%</p>
+                </div>
+                <div class="stat">
+                    <h4>Water Level</h4>
+                    <p>85%</p>
+                </div>
+            </div>
+            <h4>Peperomia Houseplant</h4>
+        </div>
+    </div>
+</body>
+</html>

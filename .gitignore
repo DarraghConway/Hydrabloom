@@ -1,0 +1,24 @@
+# Ignore Python bytecode files in all directories
+*.pyc
+__pycache__/
+
+# Ignore the __pycache__ in migrations folder
+flask_app/migrations/__pycache__/
+
+# Ignore virtual environment folder
+venv/
+
+# Ignore the 'instance' folder in the flask app (relative to project root)
+flask_app/instance/
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore IDE-specific files
+.idea/
+
+# Ignore log files
+*.log
+
+# Ignore environment configuration files
+.env
