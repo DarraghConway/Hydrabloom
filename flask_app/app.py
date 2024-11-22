@@ -127,7 +127,7 @@ def seed():
     seed_data()
     return "Seed data has been created!"
 
-
+#Comment
 # def log_sensor_data():
 #     while True:
 #         try:
@@ -151,34 +151,9 @@ def seed():
 
 #         time.sleep(5)  # Log every 15 minutes (900 seconds)
 
-from flask import render_template, redirect, url_for, session
-from functools import wraps
-from db import db, User
-
-# Decorator to restrict access to admins only
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        user_id = session.get('user_id')
-        if not user_id:
-            return redirect(url_for('login'))  # Redirect to login if not logged in
-        
-        user = User.query.get(user_id)
-        if not user or not user.is_admin:
-            return redirect(url_for('main_page'))  # Redirect if not admin
-        
-        return f(*args, **kwargs)
-    return decorated_function
-
-@app.route('/admin_dashboard')
-@admin_required
-def admin_dashboard():
-    # Retrieve all users to display in the dashboard
-    users = User.query.all()
-    return render_template('admin_dashboard.html', users=users)
-
 
 if __name__ == "__main__":
+    #Comment
     # sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
     # sensor_thread.start()
     app.run(debug=True)
