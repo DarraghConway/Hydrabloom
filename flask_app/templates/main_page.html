@@ -13,13 +13,13 @@
     {% if plants %}
         <ul>
         {% for plant in plants %}
-            <li>{{ plant.name }} - Planted on: {{ plant.date_planted }}</li>
+            <li>{{ plant.name }} - Type: {{ plant.plant_type.name }} - Location: {{ plant.location.name }} - Planted on: {{ plant.date_planted }}</li>
         {% endfor %}
         </ul>
     {% else %}
         <p>You have no plants yet.</p>
     {% endif %}
     
-    <a href="{{ url_for('add_plant') }}">Add a new plant</a>
+    <a href="{{ url_for('register_plant') }}">Register a new plant</a>
 </body>
 </html>
