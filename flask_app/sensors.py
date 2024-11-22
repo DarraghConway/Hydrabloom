@@ -1,12 +1,12 @@
-import time
-import adafruit_dht
-import board
+# import time
+# import adafruit_dht
+# import board
 # import app
 # import db
 # from db import TempAndHumidityData
 
 
-dht_device = adafruit_dht.DHT22(board.D4)
+# dht_device = adafruit_dht.DHT22(board.D4)
 
 # def log_sensor_data():
 #     while True:
