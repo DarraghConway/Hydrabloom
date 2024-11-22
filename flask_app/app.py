@@ -189,6 +189,11 @@ def delete_user(user_id):
 
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/logout')
+def logout():
+    session.clear()  # Clear the session data
+    return redirect(url_for('login'))  # Redirect to the login page or home page
+
 
 @app.route('/register_plant', methods=['GET', 'POST'])
 @admin_required  

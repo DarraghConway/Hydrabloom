@@ -13,7 +13,7 @@
     {% if plants %}
         <ul>
         {% for plant in plants %}
-            <li>{{ plant.name }} - Type: {{ plant.plant_type.name }} - Location: {{ plant.location.name }} - Planted on: {{ plant.date_planted }}</li>
+            <li>{{ plant.name }} - Type: {{ plant.plant_type.name }} - Location: {{ plant.location.name }} - Planted on: {{ plant.date_planted }} <a href="{{ url_for('display_temp_and_humidity') }}">Check Plant Status</a></li>
         {% endfor %}
         </ul>
     {% else %}
