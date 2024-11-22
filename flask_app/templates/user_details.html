@@ -1,10 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Details</title>
+    <style>
+        /* General reset for margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Set the main background color */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            /* Main background color */
+            color: black;
+            /* Text color for contrast */
+            padding: 20px;
+        }
+
+        /* Header styling */
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #fff;
+        }
+
+        table th {
+            background-color: #1c6e1b;
+            /* Darker green for header */
+            font-size: 1.2rem;
+        }
+
+        table tr:nth-child(even) {
+            background-color: rgb(158, 232, 135);
+            /* Lighter green for even rows */
+        }
+
+        table tr:hover {
+            background-color: #1c6e1b;
+            /* Darker green on hover */
+        }
+
+        /* Button styling */
+        button {
+            background-color: green;
+            /* Yellow for button */
+            color: white;
+            /* Green text color */
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: green;
+            /* Darker yellow on hover */
+        }
+
+        /* Link styling */
+        a {
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
     <h1>{{ user.name }}'s Details</h1>
 
@@ -28,4 +109,5 @@
 
     <a href="{{ url_for('admin_dashboard') }}"><button>Back to Dashboard</button></a>
 </body>
+
 </html>
