@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Now</title>
+    <title>Login</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -188,35 +188,29 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <header>
         <div class="logo-container">
             <h1>HydraBloom</h1>
-            <!-- Leaf Logo -->
-            <img src="image.jpg" alt="Leaf Logo">
+            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Leaf Logo">
         </div>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Plants</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Vase</a></li>
-                <li><a href="sign.html">Log In</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <!-- <li><a href="{{ url_for('main_page') }}">Plants</a></li> -->
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <!-- <li><a href="#">Vase</a></li> -->
+                <li><a href="{{ url_for('register') }}">Log In</a></li>
             </ul>
         </nav>
     </header>
+
     <!-- Register Section -->
     <div class="register-container">
-        <h1>Register Now!</h1>
+        <h1>Login</h1>
         <form>
-            <input type="text" placeholder="Enter your name" required>
             <input type="email" placeholder="Enter your email" required>
             <input type="password" placeholder="Enter your password" required>
-            <div class="checkbox-container">
-                <input type="checkbox" required>
-                <label>I agree to the <a href="#">terms & policy</a></label>
-            </div>
-            <button type="submit" class="signup-btn">Signup</button>
+            <button type="submit" class="signup-btn">Login</button>
         </form>
         <div class="separator">or</div>
         <div class="social-buttons">
@@ -229,7 +223,7 @@
                 Sign in with Apple
             </button>
         </div>
-        <p class="footer-text">Have an account? <a href="#">Sign In</a></p>
+        <p class="footer-text">Don't have an account? <a href="{{ url_for('register') }}">Register Now</a></p>
     </div>
 </body>
 </html>

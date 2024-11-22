@@ -188,19 +188,18 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <header>
         <div class="logo-container">
             <h1>HydraBloom</h1>
-            <img src="image.jpg" alt="Leaf Logo">
+            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Leaf Logo">
         </div>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Plants</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Vase</a></li>
-                <li><a href="sign.html">Log In</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <!-- <li><a href="{{ url_for('main_page') }}">Plants</a></li> -->
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <!-- <li><a href="#">Vase</a></li> -->
+                <li><a href="{{ url_for('register') }}">Log In</a></li>
             </ul>
         </nav>
     </header>
@@ -229,7 +228,7 @@
                 Sign in with Apple
             </button>
         </div>
-        <p class="footer-text">Have an account? <a href="#">Sign In</a></p>
+        <p class="footer-text">Have an account? <a href="{{ url_for('sign') }}">Sign In</a></p>
     </div>
 </body>
 </html>

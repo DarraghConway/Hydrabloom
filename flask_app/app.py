@@ -28,9 +28,21 @@ init_db(app)
 
 # Routes
 @app.route('/')
+def index():
+    return render_template('index.html')  # Render the home page
+
+@app.route('/')
 def home():
     plant_types = PlantType.query.all() 
     return render_template('register.html', plant_types=plant_types)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')  
+
+@app.route('/sign')
+def sign():
+    return render_template('sign.html') 
 
 @app.route('/main_page')
 def main_page():

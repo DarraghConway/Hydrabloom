@@ -3,8 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <title>HydraBloom - Home</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f8f6;
+            margin: 0;
+            padding: 0;
+        }
+
+       /* Header Styles */
+       header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #fff;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .logo-container img {
+            width: 24px; /* Adjust size as needed */
+            height: 24px; /* Adjust size as needed */
+            margin-left: 4px; /* Minimal spacing */
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #666;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        header nav ul li a:hover {
+            color: #000;
+        }
+
+        /* Main Content */
+        .container {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 600px;
+        }
+
+        .container h2 {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .add-plant {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e8fbe8;
+            border: 2px dashed #4CAF50;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .add-plant:hover {
+            background-color: #ccf5cc;
+        }
+
+        .add-plant i {
+            display: block;
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .add-plant p {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f8f8;
+            border-top: 1px solid #ddd;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+
 </head>
 <body>
+    <header>
+        <div class="logo-container">
+            <h1>HydraBloom</h1>
+            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Leaf Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('main_page') }}">Plants</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <!-- <li><a href="#">Vase</a></li> -->
+                <li><a href="{{ url_for('register') }}">Log In</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <h1>Welcome to Hydrabloom</h1>
 
     <p>Hello, {{ user.name }} ({{ user.email }})</p>

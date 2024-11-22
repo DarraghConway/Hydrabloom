@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydraBloom</title> 
+    <title>Hydrabloom - Plants</title>
     <style>
-        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             background-color: #f9f8f6;
-            color: #333;
         }
 
         /* Header Styles */
@@ -65,110 +62,155 @@
             color: #000;
         }
 
-        /* About Section */
-        .about-section {
-            background-color: #e6f4e5;
-            text-align: center;
-            padding: 50px 20px;
-        }
-
-        .about-section h2 {
-            font-size: 30px;
-            color: #1f513f;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .about-section p {
-            font-size: 18px;
-            font-style: italic;
-            color: #4d4d4d;
-            margin-bottom: 40px;
-        }
-
-        .mission-section {
+        /* Main Content */
+        .main-content {
             display: flex;
-            justify-content: space-around;
             align-items: center;
-            padding: 50px 20px;
+            justify-content: space-between;
+            padding: 60px 40px;
         }
 
-        .mission-text {
-            flex: 1;
-            max-width: 600px;
+        .text-content {
+            max-width: 50%;
         }
 
-        .mission-text h3 {
-            font-size: 24px;
-            color: #000;
+        .text-content h1 {
+            font-size: 36px;
             font-weight: bold;
+            color: #333;
             margin-bottom: 20px;
         }
 
-        .mission-text p {
-            font-size: 16px;
-            color: #333;
-            line-height: 1.8;
+        .text-content p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
         }
 
-        .plant-image {
-            flex: 1;
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f513f;
+            border: 2px solid #1f513f;
+            border-radius: 5px;
             text-align: center;
         }
 
-        .plant-image img {
-            width: 300px;
-            border-radius: 10px;
+        .buttons a.register-btn {
+            background-color: #1f513f;
+            color: #fff;
         }
 
-        .plant-image p {
-            font-size: 16px;
+        .buttons a:hover {
+            background-color: #14412e;
+            color: #fff;
+        }
+
+        /* Plant Details */
+        .plant-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .plant-details img {
+            width: 220px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .stat p {
+            font-size: 18px;
             font-weight: bold;
-            margin-top: 10px;
+            color: #1f513f;
         }
     </style>
 </head>
 <body>
-
-    <!-- Header -->
     <header>
         <div class="logo-container">
             <h1>HydraBloom</h1>
-            <!-- Leaf Logo -->
-            <img src="images/image.jpg" alt="Leaf Logo">
+            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Leaf Logo">
         </div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Plants</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Vase</a></li>
-                <li><a href="sign.html">Log In</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <!-- <li><a href="{{ url_for('main_page') }}">Plants</a></li> -->
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <!-- <li><a href="#">Vase</a></li> -->
+                <li><a href="{{ url_for('register') }}">Log In</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- About Section -->
-    <section class="about-section">
-        <h2>About Hydrabloom</h2>
-        <p>The only vase your plant will ever need</p>
-    </section>
-
-    <!-- Mission Section -->
-    <section class="mission-section">
-        <div class="mission-text">
-            <h3>Our Mission</h3>
-            <p>
-                Our mission is to revolutionize plant care with innovative solutions that make it effortless to nurture nature. 
-                We believe that everyone deserves the joy of thriving plants without the stress of constant upkeep. That’s why we’ve created a vase that automatically waters your plants, 
-                ensuring they receive the perfect amount of hydration when they need it most. Our goal is to bring harmony between technology and nature.
-            </p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="text-content">
+            <h1>The World of Decorative Plants</h1>
+            <p>Take care of your houseplants, and before you know it, your home will be a botanical paradise.</p>
+            <div class="buttons">
+                <a href="{{ url_for('sign') }}" class="login-btn">Login</a>
+                <a href="{{ url_for('register') }}" class="register-btn">Register</a>
+            </div>
         </div>
-        <div class="plant-image">
-            <img src="images/plant.jpg" alt="Asplenium Houseplant">
-            <p>Asplenium Houseplant</p>
+        <div class="plant-details">
+            <img src="https://png.pngtree.com/png-vector/20240207/ourmid/pngtree-indoor-plant-flowerpot-png-image_11669796.png" alt="Peperomia Houseplant">
+            <div class="stats">
+                <div class="stat">
+                    <h4>Light Status</h4>
+                    <p>On</p>
+                </div>
+                <div class="stat">
+                    <h4>Temperature</h4>
+                    <p>23°C</p>
+                </div>
+                <div class="stat">
+                    <h4>Humidity</h4>
+                    <p>74%</p>
+                </div>
+                <div class="stat">
+                    <h4>Water Level</h4>
+                    <p>85%</p>
+                </div>
+            </div>
+            <h4>Peperomia Houseplant</h4>
         </div>
-    </section>
-
+    </div>
 </body>
 </html>
