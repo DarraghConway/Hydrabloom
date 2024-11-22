@@ -76,17 +76,19 @@ def register():
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
-        password = generate_password_hash(request.form['password'])  
-
-        new_user = User(name=name, email=email, password=password)
+        password = generate_password_hash(request.form['password'])
+        
+        # Default is_admin to False for all new registrations
+        new_user = User(name=name, email=email, password=password, is_admin=False)
 
         db.session.add(new_user)
         db.session.commit()
 
         session['user_id'] = new_user.id
-        return redirect(url_for('main_page')) 
+        return redirect(url_for('main_page'))
 
-    return render_template('register.html')  
+    return render_template('register.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -148,6 +150,32 @@ def seed():
 #             print(f"Sensor error: {err.args[0]}")
 
 #         time.sleep(5)  # Log every 15 minutes (900 seconds)
+
+from flask import render_template, redirect, url_for, session
+from functools import wraps
+from db import db, User
+
+# Decorator to restrict access to admins only
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id = session.get('user_id')
+        if not user_id:
+            return redirect(url_for('login'))  # Redirect to login if not logged in
+        
+        user = User.query.get(user_id)
+        if not user or not user.is_admin:
+            return redirect(url_for('main_page'))  # Redirect if not admin
+        
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/admin_dashboard')
+@admin_required
+def admin_dashboard():
+    # Retrieve all users to display in the dashboard
+    users = User.query.all()
+    return render_template('admin_dashboard.html', users=users)
 
 
 if __name__ == "__main__":
