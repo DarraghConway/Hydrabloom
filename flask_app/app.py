@@ -6,10 +6,10 @@ from datetime import datetime
 from seed import seed_data
 from functools import wraps
 
-import time
-import adafruit_dht
-import board
-dht_device = adafruit_dht.DHT22(board.D4)
+# import time
+# import adafruit_dht
+# import board
+# dht_device = adafruit_dht.DHT22(board.D4)
 
 # from sensors import log_sensor_data
 
@@ -123,28 +123,28 @@ def seed():
     return "Seed data has been created!"
 
 #Comment
-def log_sensor_data():
-    while True:
-        try:
-            temperature_c = dht_device.temperature
-            humidity = dht_device.humidity
+# def log_sensor_data():
+#     while True:
+#         try:
+#             temperature_c = dht_device.temperature
+#             humidity = dht_device.humidity
 
-            # Save to the database
-            if temperature_c is not None and humidity is not None:
-                new_reading = TempAndHumidityData(
-                    temperature=temperature_c,
-                    humidity=humidity
-                )
-                with app.app_context():  # Ensure Flask app context for database operations
-                    db.session.add(new_reading)
-                    db.session.commit()
+#             # Save to the database
+#             if temperature_c is not None and humidity is not None:
+#                 new_reading = TempAndHumidityData(
+#                     temperature=temperature_c,
+#                     humidity=humidity
+#                 )
+#                 with app.app_context():  # Ensure Flask app context for database operations
+#                     db.session.add(new_reading)
+#                     db.session.commit()
 
-                print(f"Logged: Temp={temperature_c}°C, Humidity={humidity}%")
+#                 print(f"Logged: Temp={temperature_c}°C, Humidity={humidity}%")
 
-        except RuntimeError as err:
-            print(f"Sensor error: {err.args[0]}")
+#         except RuntimeError as err:
+#             print(f"Sensor error: {err.args[0]}")
 
-        time.sleep(5)  # Log every 15 minutes (900 seconds)
+#         time.sleep(5)  # Log every 15 minutes (900 seconds)
 
 
 def admin_required(f):
@@ -231,6 +231,6 @@ def register_plant():
 
 if __name__ == "__main__":
     #Comment
-    sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
-    sensor_thread.start()
+    # sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
+    # sensor_thread.start()
     app.run(debug=True)
