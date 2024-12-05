@@ -113,8 +113,7 @@ def list_tables():
 
 @app.route('/data')
 def display_temp_and_humidity():
-    data = TempAndHumidityData.query.all()
-    return render_template('display_data.html', data=data)
+    return render_template('display_data.html')
 
 
 @app.route('/seed')

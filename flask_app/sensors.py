@@ -1,48 +1,68 @@
-# import time
-# import adafruit_dht
-# import board
-# import app
-# import db
-# from db import TempAndHumidityData
+import time
+import adafruit_dht
+import board
+from pubnub.pnconfiguration import PNConfiguration
+from pubnub.pubnub import PubNub, SubscribeListener
+from dotenv import load_dotenv
+import os
 
+# Load environment variables for PubNub keys
+load_dotenv()
 
-# dht_device = adafruit_dht.DHT22(board.D4)
+# PubNub configuration
+config = PNConfiguration()
+config.subscribe_key = os.getenv("PUBNUB_SUBSCRIBE_KEY")
+config.publish_key = os.getenv("PUBNUB_PUBLISH_KEY")
+config.user_id = "dht22-pi-0"
 
-# def log_sensor_data():
-#     while True:
-#         try:
-#             temperature_c = dht_device.temperature
-#             humidity = dht_device.humidity
+pubnub = PubNub(config)
 
-#             # Save to the database
-#             if temperature_c is not None and humidity is not None:
-#                 new_reading = TempAndHumidityData(
-#                     temperature=temperature_c,
-#                     humidity=humidity
-#                 )
-#                 with app.app_context():  # Ensure Flask app context for database operations
-#                     db.session.add(new_reading)
-#                     db.session.commit()
+# Initialize DHT22 sensor
+dht_device = adafruit_dht.DHT22(board.D4)
 
-#                 print(f"Logged: Temp={temperature_c}°C, Humidity={humidity}%")
+# App channel for PubNub communication
+app_channel = "dht22-pi-channel"
 
-#         except RuntimeError as err:
-#             print(f"Sensor error: {err.args[0]}")
+class Listener(SubscribeListener):
+    def status(self, pubnub, status):
+        print(f"Status: {status.category.name}")
 
-#         time.sleep(900)  # Log every 15 minutes (900 seconds)
+pubnub.add_listener(Listener())
+pubnub.subscribe().channels(app_channel).execute()
 
+# Publish sensor data to PubNub
+def publish_sensor_data(temp_c, humidity):
+    message = {
+        "temperature_c": temp_c,
+        "temperature_f": temp_c * 9 / 5 + 32,
+        "humidity": humidity,
+    }
+    pubnub.publish().channel(app_channel).message(message).sync()
 
-#while True:
- #   try:
-  #      temperature_c = dht_device.temperature
-   #     temperature_f = temperature_c * (9 / 5) + 32
+# Main function to read sensor data
+def main():
+    print("Starting DHT22 Sensor with PubNub. Press Ctrl+C to exit.\n")
+    try:
+        while True:
+            try:
+                temperature_c = dht_device.temperature
+                humidity = dht_device.humidity
 
-    #    humidity = dht_device.humidity
+                if temperature_c is not None and humidity is not None:
+                    print(f"Temperature: {temperature_c:.1f}°C, Humidity: {humidity:.1f}%")
+                    publish_sensor_data(temperature_c, humidity)
+                else:
+                    print("Failed to read data from the sensor. Retrying...")
 
-     #   print("Temp:{:.1f} C / {:.1f} F    Humidity: {}%".format(temperature_c, temperature_f, humidity))
-   # except RuntimeError as err:
-    #    print(err.args[0])
+            except RuntimeError as error:
+                print(f"RuntimeError: {error.args[0]}")
 
-#    time.sleep(2.0) 
+            time.sleep(2.0)
 
+    except KeyboardInterrupt:
+        print("Exiting...")
+    finally:
+        dht_device.exit()
 
+if __name__ == "__main__":
+    main()
