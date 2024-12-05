@@ -27,7 +27,7 @@ def log_sensor_data():
     # Set the timeout explicitly
     pubnub.config.timeout = 30  # Increase timeout to 30 seconds (default is 10)
 
-    app_channel = "dht22-pi-channel"
+    app_channel = "sensors-pi-channel"
 
     while True:
         try:

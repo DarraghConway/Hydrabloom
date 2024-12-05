@@ -1,11 +1,11 @@
 let pubnub;
-let appChannel = "dht22-pi-channel";
+let appChannel = "sensors-pi-channel";
 
 const setupPubNub = () => {
   pubnub = new PubNub({
-    publishKey: "pub-c-5e5be15e-f582-40f2-8c1a-ca9360199f9d", // Replace with your actual publish key
-    subscribeKey: "sub-c-a2447194-c69b-4dbe-a5e8-a4ed24799246", // Replace with your actual subscribe key
-    userId: "Jack-device", // Replace with your actual user ID
+    publishKey: "pub-c-5e5be15e-f582-40f2-8c1a-ca9360199f9d",
+    subscribeKey: "sub-c-a2447194-c69b-4dbe-a5e8-a4ed24799246", 
+    userId: "Jack-device", 
   });
 
   // Subscribe to the channel

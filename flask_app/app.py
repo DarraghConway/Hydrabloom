@@ -198,7 +198,7 @@ def register_plant():
 
 
 if __name__ == "__main__":
-    # sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
-    # sensor_thread.start()
+    sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
+    sensor_thread.start()
 
     app.run(debug=True)
