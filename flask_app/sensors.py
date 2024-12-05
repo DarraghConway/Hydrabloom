@@ -2,67 +2,66 @@ import time
 import adafruit_dht
 import board
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.pubnub import PubNub, SubscribeListener
+from pubnub.pubnub import PubNub
+from pubnub.exceptions import PubNubException
 from dotenv import load_dotenv
 import os
+import uuid
+user_id = "Jack-device"
 
-# Load environment variables for PubNub keys
+
+# Load environment variables from .env file
 load_dotenv()
 
-# PubNub configuration
-config = PNConfiguration()
-config.subscribe_key = os.getenv("PUBNUB_SUBSCRIBE_KEY")
-config.publish_key = os.getenv("PUBNUB_PUBLISH_KEY")
-config.user_id = "dht22-pi-0"
+def log_sensor_data():
+    # Initialize the DHT22 sensor
+    dht_device = adafruit_dht.DHT22(board.D4)
 
-pubnub = PubNub(config)
+    # Configure PubNub using environment variables
+    pnconfig = PNConfiguration()
+    pnconfig.publish_key = os.getenv('PUBNUB_PUBLISH_KEY')
+    pnconfig.subscribe_key = os.getenv('PUBNUB_SUBSCRIBE_KEY')
+    pnconfig.user_id = user_id  # Use the user ID from .env
+    pubnub = PubNub(pnconfig)
+    
+    # Set the timeout explicitly
+    pubnub.config.timeout = 30  # Increase timeout to 30 seconds (default is 10)
 
-# Initialize DHT22 sensor
-dht_device = adafruit_dht.DHT22(board.D4)
+    app_channel = "dht22-pi-channel"
 
-# App channel for PubNub communication
-app_channel = "dht22-pi-channel"
+    while True:
+        try:
+            # Read temperature and humidity from DHT22 sensor
+            temperature_c = dht_device.temperature
+            humidity = dht_device.humidity
 
-class Listener(SubscribeListener):
-    def status(self, pubnub, status):
-        print(f"Status: {status.category.name}")
+            if temperature_c is not None and humidity is not None:
+                message = {
+                    "temperature": temperature_c,
+                    "humidity": humidity
+                }
+                # Attempt to publish the message
+                attempt = 0
+                max_attempts = 5  # Maximum retry attempts
 
-pubnub.add_listener(Listener())
-pubnub.subscribe().channels(app_channel).execute()
+                while attempt < max_attempts:
+                    try:
+                        pubnub.publish().channel(app_channel).message(message).sync()
+                        print(f"Published: {message}")
+                        break  # Exit retry loop if successful
+                    except PubNubException as e:
+                        print(f"Error publishing message: {e}")
+                        attempt += 1
+                        if attempt < max_attempts:
+                            print(f"Retrying... Attempt {attempt}/{max_attempts}")
+                            time.sleep(10)  # Retry after 10 seconds
+                        else:
+                            print("Max retry attempts reached. Skipping this data point.")
+                            break
 
-# Publish sensor data to PubNub
-def publish_sensor_data(temp_c, humidity):
-    message = {
-        "temperature_c": temp_c,
-        "temperature_f": temp_c * 9 / 5 + 32,
-        "humidity": humidity,
-    }
-    pubnub.publish().channel(app_channel).message(message).sync()
+        except RuntimeError as err:
+            print(f"Sensor error: {err.args[0]}")
 
-# Main function to read sensor data
-def main():
-    print("Starting DHT22 Sensor with PubNub. Press Ctrl+C to exit.\n")
-    try:
-        while True:
-            try:
-                temperature_c = dht_device.temperature
-                humidity = dht_device.humidity
+        # Sleep for 5 seconds before reading the sensor again
+        time.sleep(5)
 
-                if temperature_c is not None and humidity is not None:
-                    print(f"Temperature: {temperature_c:.1f}°C, Humidity: {humidity:.1f}%")
-                    publish_sensor_data(temperature_c, humidity)
-                else:
-                    print("Failed to read data from the sensor. Retrying...")
-
-            except RuntimeError as error:
-                print(f"RuntimeError: {error.args[0]}")
-
-            time.sleep(2.0)
-
-    except KeyboardInterrupt:
-        print("Exiting...")
-    finally:
-        dht_device.exit()
-
-if __name__ == "__main__":
-    main()
