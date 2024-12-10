@@ -36,11 +36,17 @@ class Plant(db.Model):
 
 
 
-class TempAndHumidityData(db.Model):
+class dht22Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     temperature = db.Column(db.Float, nullable=False)
     humidity = db.Column(db.Float, nullable=False)
+
+
+class tsl2561Data(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    lux = db.Column(db.Float, nullable=False)
 
 def init_db(app):
     db.init_app(app)

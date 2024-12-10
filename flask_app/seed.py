@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash
-from db import db, User, PlantType, Location, Plant, TempAndHumidityData
+from db import db, User, PlantType, Location, Plant, dht22Data, tsl2561Data
 from datetime import datetime  # Import datetime module
 
 def seed_data():
@@ -8,7 +8,8 @@ def seed_data():
     db.session.query(User).delete()
     db.session.query(Location).delete()
     db.session.query(PlantType).delete()
-    db.session.query(TempAndHumidityData).delete()
+    db.session.query(dht22Data).delete()
+    db.session.query(tsl2561Data).delete()
     db.session.commit()  # Commit deletions first
 
     # Create new seed data
