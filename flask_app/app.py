@@ -1,16 +1,16 @@
 import threading
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from db import init_db, db, User, PlantType, Location, Plant, TempAndHumidityData  # Import models and init_db
+from db import init_db, db, User, PlantType, Location, Plant, dht22Data, tsl2561Data  # Import models and init_db
 from datetime import datetime 
 from seed import seed_data
 from functools import wraps
-from sensors import log_sensor_data
+# from sensors import log_sensor_data
 
 app = Flask(__name__)
 
 # Configurations
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plants.db'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/Hydrabloom'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
 app.secret_key = 'Richy123'
 
@@ -196,6 +196,42 @@ def register_plant():
     users = User.query.all()  
     return render_template('register_plant.html', plant_types=plant_types, locations=locations, users=users)
 
+
+@app.route('/api/store_dht22_data', methods=['POST'])
+def store_dht22_data():
+    data = request.get_json()
+    
+    if 'temperature' not in data or 'humidity' not in data:
+        return jsonify({'error': 'Missing temperature or humidity data'}), 400
+    
+    # Store DHT22 data
+    new_data = dht22Data(
+        temperature=data['temperature'],
+        humidity=data['humidity']
+    )
+    
+    db.session.add(new_data)
+    db.session.commit()
+    
+    return jsonify({'message': 'DHT22 data stored successfully'}), 201
+
+
+@app.route('/api/store_tsl2561_data', methods=['POST'])
+def store_tsl2561_data():
+    data = request.get_json()
+    
+    if 'lux' not in data:
+        return jsonify({'error': 'Missing lux data'}), 400
+    
+    # Store TSL2561 data
+    new_data = tsl2561Data(
+        lux=data['lux']
+    )
+    
+    db.session.add(new_data)
+    db.session.commit()
+    
+    return jsonify({'message': 'TSL2561 data stored successfully'}), 201
 
 if __name__ == "__main__":
     # sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
