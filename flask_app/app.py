@@ -1,22 +1,16 @@
 import threading
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from db import init_db, db, User, PlantType, Location, Plant, TempAndHumidityData  # Import models and init_db
+from db import init_db, db, User, PlantType, Location, Plant, dht22Data, tsl2561Data  # Import models and init_db
 from datetime import datetime 
 from seed import seed_data
 from functools import wraps
-
-# import time
-# import adafruit_dht
-# import board
-# dht_device = adafruit_dht.DHT22(board.D4)
-
 # from sensors import log_sensor_data
 
 app = Flask(__name__)
 
 # Configurations
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plants.db'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/Hydrabloom'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
 app.secret_key = 'Richy123'
 
@@ -125,39 +119,13 @@ def list_tables():
 
 @app.route('/data')
 def display_temp_and_humidity():
-    data = TempAndHumidityData.query.all()
-    return render_template('display_data.html', data=data)
+    return render_template('display_data.html')
 
 
 @app.route('/seed')
 def seed():
     seed_data()
     return "Seed data has been created!"
-
-#Comment
-# def log_sensor_data():
-#     while True:
-#         try:
-#             temperature_c = dht_device.temperature
-#             humidity = dht_device.humidity
-
-#             # Save to the database
-#             if temperature_c is not None and humidity is not None:
-#                 new_reading = TempAndHumidityData(
-#                     temperature=temperature_c,
-#                     humidity=humidity
-#                 )
-#                 with app.app_context():  # Ensure Flask app context for database operations
-#                     db.session.add(new_reading)
-#                     db.session.commit()
-
-#                 print(f"Logged: Temp={temperature_c}°C, Humidity={humidity}%")
-
-#         except RuntimeError as err:
-#             print(f"Sensor error: {err.args[0]}")
-
-#         time.sleep(5)  # Log every 15 minutes (900 seconds)
-
 
 def admin_required(f):
     @wraps(f)
@@ -241,8 +209,44 @@ def register_plant():
     return render_template('register_plant.html', plant_types=plant_types, locations=locations, users=users)
 
 
+@app.route('/api/store_dht22_data', methods=['POST'])
+def store_dht22_data():
+    data = request.get_json()
+    
+    if 'temperature' not in data or 'humidity' not in data:
+        return jsonify({'error': 'Missing temperature or humidity data'}), 400
+    
+    # Store DHT22 data
+    new_data = dht22Data(
+        temperature=data['temperature'],
+        humidity=data['humidity']
+    )
+    
+    db.session.add(new_data)
+    db.session.commit()
+    
+    return jsonify({'message': 'DHT22 data stored successfully'}), 201
+
+
+@app.route('/api/store_tsl2561_data', methods=['POST'])
+def store_tsl2561_data():
+    data = request.get_json()
+    
+    if 'lux' not in data:
+        return jsonify({'error': 'Missing lux data'}), 400
+    
+    # Store TSL2561 data
+    new_data = tsl2561Data(
+        lux=data['lux']
+    )
+    
+    db.session.add(new_data)
+    db.session.commit()
+    
+    return jsonify({'message': 'TSL2561 data stored successfully'}), 201
+
 if __name__ == "__main__":
-    #Comment
     # sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
     # sensor_thread.start()
+
     app.run(debug=True)

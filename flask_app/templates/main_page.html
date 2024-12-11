@@ -139,29 +139,10 @@
 
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <h1>HydraBloom</h1>
-            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Leaf Logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('main_page') }}">Plants</a></li>
-                <li><a href="{{ url_for('about') }}">About Us</a></li>
-                <li><a href="{{ url_for('register') }}">Log In</a></li>
-            </ul>
-        </nav>
-    </header>
+    <h1>Welcome to Hydrabloom</h1>
 
-    <!-- Welcome Section -->
-    <section class="welcome-section">
-        <h1>Welcome to HydraBloom</h1>
-        <p>Hello, {{ user.name }} ({{ user.email }})</p>
-        <a href="{{ url_for('add_plant') }}">Add a new plant</a>
-    </section>
-
-    <!-- Plants Section -->
+    <p>Hello, {{ user.name }} ({{ user.email }})</p>
+    
     <h2>Your Plants</h2>
     {% if plants %}
         <ul>
@@ -174,10 +155,6 @@
     {% endif %}
     
     <a href="{{ url_for('register_plant') }}">Register a new plant</a>
-
-    <footer>
-        <p>© 2024 HydraBloom. All rights reserved.</p>
-    </footer>
 </body>
 
 </html>

@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temp and Humidity Data</title>
+    <title>Plant Data</title>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.8.2.8.js"></script>
+    <script src="static/js/main.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -72,7 +74,7 @@
     </style>
 </head>
 
-<body>
+<!-- <body>
     <h1>Temperature and Humidity Data</h1>
     <table>
         <thead>
@@ -94,6 +96,13 @@
             {% endfor %}
         </tbody>
     </table>
+</body> -->
+
+<body onload="setupPubNub();">
+    <h1>Sensor Data</h1>
+    <p>Temperature: <span id="temperature_id"></span></p>
+    <p>Humidity: <span id="humidity_id"></span></p>
+    <p>Lux: <span id="lux_id"></span></p>
 </body>
 
 </html>
