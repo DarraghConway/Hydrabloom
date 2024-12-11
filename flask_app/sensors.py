@@ -1,14 +1,15 @@
-
 # import time
+# import threading
 # import board
 # import adafruit_dht
 # import adafruit_tsl2561
 # from pubnub.pnconfiguration import PNConfiguration
 # from pubnub.pubnub import PubNub
-# from pubnub.exceptions import PubNubException
+# from pubnub.callbacks import SubscribeCallback
 # from dotenv import load_dotenv
 # import os
 # import uuid
+
 # user_id = "Jack-device"
 
 # load_dotenv()
@@ -23,27 +24,40 @@
 # pnconfig = PNConfiguration()
 # pnconfig.publish_key = os.getenv('PUBNUB_PUBLISH_KEY')
 # pnconfig.subscribe_key = os.getenv('PUBNUB_SUBSCRIBE_KEY')
-# pnconfig.user_id = user_id  
+# pnconfig.user_id = user_id
 # pubnub = PubNub(pnconfig)
 
-
-
 # app_channel = "sensors-pi-channel"
+
+# LED_PIN = 15  # GPIO pin where the LED is connected
+
+# # Initialize GPIO
+# import RPi.GPIO as GPIO
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(LED_PIN, GPIO.OUT)
+
+# # Lock to prevent DHT22 sensor race conditions
+# sensor_lock = threading.Lock()
 
 # def log_dht22_data():
 #     """Logs temperature and humidity data from the DHT22 sensor."""
 #     try:
-#         temperature_c = dht_device.temperature
-#         humidity = dht_device.humidity
-#         if temperature_c is not None and humidity is not None:
-#             message = {
+#         with sensor_lock:
+#             # Wait for sensor to stabilize
+#             temperature_c = dht_device.temperature
+#             humidity = dht_device.humidity
+#             if temperature_c is not None and humidity is not None:
+#                 message = {
 #                     "temperature": temperature_c,
 #                     "humidity": humidity
 #                 }
-#             pubnub.publish().channel(app_channel).message(message).sync()
-#             print(f"Published DHT22 data: {message}")
+#                 pubnub.publish().channel(app_channel).message(message).sync()
+#                 print(f"Published DHT22 data: {message}")
+#             else:
+#                 print("Failed to read from DHT22")
 #     except Exception as e:
 #         print(f"Error with DHT22 sensor: {e}")
+#     time.sleep(2)  # Wait 2 seconds between readings to ensure accuracy
 
 # def log_tsl2561_data():
 #     """Logs light level data from the TSL2561 sensor."""
@@ -69,5 +83,46 @@
 #         log_tsl2561_data()
 #         time.sleep(5)  # Delay before the next reading
 
+# def turn_led_on(pin):
+#     """Turn LED on."""
+#     GPIO.output(pin, GPIO.HIGH)
+#     print(f"LED turned ON")
+
+# def turn_led_off(pin):
+#     """Turn LED off."""
+#     GPIO.output(pin, GPIO.LOW)
+#     print(f"LED turned OFF")
+
+# class LEDControlCallback(SubscribeCallback):
+#     def message(self, pubnub, message):
+#         command = message.message.get("command")
+#         print(f"Received command: {command}")
+
+#         if command == "LED_ON":
+#             turn_led_on(LED_PIN)
+#         elif command == "LED_OFF":
+#             turn_led_off(LED_PIN)
+#         else:
+#             print("Unknown command received")
+
+# # Function to handle LED control in a thread
+# def led_control():
+#     pubnub.add_listener(LEDControlCallback())
+#     pubnub.subscribe().channels("led-pi-channel").execute()
+
+# def start_threads():
+#     # Create a thread for logging sensor data
+#     sensor_thread = threading.Thread(target=log_sensor_data)
+
+#     # Create a thread for LED control (PubNub listener)
+#     led_thread = threading.Thread(target=led_control)
+
+#     # Start both threads
+#     sensor_thread.start()
+#     led_thread.start()
+
+#     sensor_thread.join()
+#     led_thread.join()
+
 # if __name__ == "__main__":
-#     log_sensor_data()  # Start logging sensor data
+#     start_threads()

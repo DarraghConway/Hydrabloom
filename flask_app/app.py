@@ -5,7 +5,6 @@ from db import init_db, db, User, PlantType, Location, Plant, dht22Data, tsl2561
 from datetime import datetime 
 from seed import seed_data
 from functools import wraps
-# from sensors import log_sensor_data
 
 app = Flask(__name__)
 
@@ -246,7 +245,4 @@ def store_tsl2561_data():
     return jsonify({'message': 'TSL2561 data stored successfully'}), 201
 
 if __name__ == "__main__":
-    # sensor_thread = threading.Thread(target=log_sensor_data, daemon=True)
-    # sensor_thread.start()
-
     app.run(debug=True)
