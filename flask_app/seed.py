@@ -20,11 +20,28 @@ def seed_data():
     location_2 = Location(name='Bedroom')
     location_3 = Location(name='Balcony')
 
-    user_1 = User(name='Alice', email='alice@example.com', password=generate_password_hash('password123'))
-    user_2 = User(name='Bob', email='bob@example.com', password=generate_password_hash('password456'))
+    # Create users
+    admin_user = User(
+        name='Admin', 
+        email='admin@example.com', 
+        password=generate_password_hash('adminpassword'),
+        is_admin=True
+    )
+    user_1 = User(
+        name='Alice', 
+        email='alice@example.com', 
+        password=generate_password_hash('password123'),
+        is_admin=False
+    )
+    user_2 = User(
+        name='Bob', 
+        email='bob@example.com', 
+        password=generate_password_hash('password456'),
+        is_admin=False
+    )
 
     # Add seed data to session and commit
-    db.session.add_all([plant_type_1, plant_type_2, plant_type_3, location_1, location_2, location_3, user_1, user_2])
+    db.session.add_all([plant_type_1, plant_type_2, plant_type_3, location_1, location_2, location_3, admin_user, user_1, user_2])
     db.session.commit()  # Commit after adding users, locations, and plant types
 
     # Convert string dates to datetime.date objects

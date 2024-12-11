@@ -166,12 +166,14 @@
     {% if plants %}
         <ul>
         {% for plant in plants %}
-            <li>{{ plant.name }} - Planted on: {{ plant.date_planted }}</li>
+            <li>{{ plant.name }} - Type: {{ plant.plant_type.name }} - Location: {{ plant.location.name }} - Planted on: {{ plant.date_planted }} <a href="{{ url_for('display_temp_and_humidity') }}">Check Plant Status</a></li>
         {% endfor %}
         </ul>
     {% else %}
         <p style="text-align:center;">You have no plants yet.</p>
     {% endif %}
+    
+    <a href="{{ url_for('register_plant') }}">Register a new plant</a>
 
     <footer>
         <p>© 2024 HydraBloom. All rights reserved.</p>

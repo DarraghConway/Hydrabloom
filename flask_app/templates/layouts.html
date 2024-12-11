@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HydraBloom{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- Adjust CSS file path -->
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1>HydraBloom</h1>
+            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Leaf Logo"> <!-- Adjust image path -->
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="#">Plants</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Vase</a></li>
+                {% if 'user_id' in session %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 HydraBloom. All rights reserved.</p>
+    </footer>
+</body>
+</html>
