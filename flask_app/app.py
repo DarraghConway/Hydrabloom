@@ -1,7 +1,7 @@
 import threading
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from db import init_db, db, User, PlantType, Location, Plant, dht22Data, tsl2561Data  # Import models and init_db
+from db import init_db, db, User, PlantType, Location, Plant, dht22Data, tsl2561Data, SoilMoistureData # Import models and init_db
 from datetime import datetime 
 from seed import seed_data
 from functools import wraps
@@ -243,6 +243,28 @@ def store_tsl2561_data():
     db.session.commit()
     
     return jsonify({'message': 'TSL2561 data stored successfully'}), 201
+
+@app.route('/api/store_soil_moisture_data', methods=['POST'])
+def store_soil_moisture_data():
+    data = request.get_json()
+    
+    # Check if the soil moisture data is present
+    if 'soilMoisture' not in data:
+        return jsonify({'error': 'Missing soil moisture data'}), 400
+    try:
+        # Store Soil Moisture data
+        new_data = SoilMoistureData(  # Ensure this matches your SQLAlchemy model name
+            soil_moisture=data['soilMoisture']  # Matches the key sent from the frontend
+        )
+        
+        db.session.add(new_data)
+        db.session.commit()
+        
+        return jsonify({'message': 'Soil moisture data stored successfully'}), 201
+    except Exception as e:
+        return jsonify({'error': f'Failed to store data: {str(e)}'}), 500
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
