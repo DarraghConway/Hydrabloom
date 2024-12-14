@@ -48,6 +48,12 @@ class tsl2561Data(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     lux = db.Column(db.Float, nullable=False)
 
+class SoilMoistureData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    soil_moisture = db.Column(db.Float, nullable=False)  # Soil moisture as a percentage
+
+    
 def init_db(app):
     db.init_app(app)
     migrate.init_app(app, db)
